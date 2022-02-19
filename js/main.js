@@ -3,7 +3,7 @@ function getRandomNumber(from, to) {
     const result = Math.floor(Math.random() * (to - from + 1) + from);
     return +result;
   }
-  throw new Error("Неверное значение");
+  throw new Error('Неверное значение');
 }
 
 function getFloatingPointNumber(from, to, quatity) {
@@ -11,7 +11,7 @@ function getFloatingPointNumber(from, to, quatity) {
     const result = Math.random() * (to - from + 1) + from;
     return +result.toFixed(quatity);
   }
-  throw new Error("Неверное значение");
+  throw new Error('Неверное значение');
 }
 
 
