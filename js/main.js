@@ -1,17 +1,24 @@
 function getRandomNumber(from, to) {
-  if(0 <= from && from < to){
-    const result = Math.random() * (to - from) + from;
-    return +result.toFixed();
+  if (
+      0 <= from &&
+      from < to
+  ) {
+    const result = Math.floor(Math.random() * (to - from + 1) + from);
+    return +result;
   }
-  return 'Ведите положительные числа отличающиеся друг от друга!';
+  throw new Error ("Неверное значение");
 }
 
-function getFloatingPointNumber(from, to, quatity){
-  if(0 <= from && from < to && 0 <= quatity){
-    const result = Math.random() * (to - from) + from;
+function getFloatingPointNumber(from, to, quatity) {
+  if (
+      0 <= from &&
+      from < to &&
+      0 <= quatity
+  ) {
+    const result = Math.random() * (to - from + 1) + from;
     return +result.toFixed(quatity);
   }
-  return 'Ведите положительные числа отличающиеся друг от друга!';
+  throw new Error ("Неверное значение");
 }
 
 getRandomNumber(1, 10);
