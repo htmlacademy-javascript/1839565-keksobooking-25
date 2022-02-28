@@ -45,17 +45,19 @@ function getRandomArrayElement(array) {
 }
 
 function getAvatarNumber() {
-  const number = getRandomNumber(1, 10);
-  if (number < 10) {
-    return `0${number}`;
-  }
-  return number;
+  let number = 1;
+  return function () {
+    if (number < 10) {return `0${number++}`;}
+    return 10;
+  };
 }
+
+const avatarNumber = getAvatarNumber();
 
 class Advertisement {
   constructor() {
     this.author = {
-      avatar: `img/avatars/user${getAvatarNumber()}.png`
+      avatar: `img/avatars/user${avatarNumber()}.png`
     };
 
     this.location = {
