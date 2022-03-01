@@ -13,35 +13,30 @@ const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg'
 ];
 
-function getRandomNumber(from, to) {
+const getRandomNumber = (from, to) => {
   if (0 <= from && from < to) {
     return Math.floor(Math.random() * (to - from + 1) + from);
   }
   throw new Error('Неверное значение');
-}
+};
 
-function getFloatingPointNumber(from, to, fractionDigit) {
+const getFloatingPointNumber = (from, to, fractionDigit) => {
   if (0 <= from && from < to && 0 <= fractionDigit) {
     const result = Math.random() * (to - from + 1) + from;
     return +result.toFixed(fractionDigit);
   }
   throw new Error('Неверное значение');
-}
+};
 
-function getRandomArray(array) {
-  const randomIndex = getRandomNumber(1, array.length);
-  return array.slice(0, randomIndex);
-}
+const getRandomArray = (array) => array.slice(0, getRandomNumber(1, array.length) );
 
-function getRandomArrayElement(array) {
-  const length = array.length - 1;
-  return array[getRandomNumber(0, length)];
-}
+const getRandomArrayElement = (array) => array[ getRandomNumber(0, array.length - 1) ];
 
 class Advertisement {
   constructor(index) {
+    this.index = index.toString().padStart(2, '0');
     this.author = {
-      avatar: `img/avatars/user${index.toString().padStart(2, '0')}.png`
+      avatar: `img/avatars/user${this.index}.png`
     };
 
     this.location = {
@@ -67,11 +62,7 @@ class Advertisement {
 }
 
 function createOnArrayOfObject(count) {
-  const array = [];
-  for (let i = 1; i <= count; i++) {
-    array.push(new Advertisement(i));
-  }
-  return array;
+  return Array.from({length: count}, (_item, index) => new Advertisement(index) );
 }
 
 createOnArrayOfObject(10);
