@@ -1,5 +1,5 @@
-import { getRandomArray, getRandomArrayElement } from '../utils/array-processing.js';
-import { getFloatingPointNumber } from '../utils/floatingPoint-number.js';
+import { getRandomArray, getRandomArrayElement, getFloatingPointNumber } from '../utils/utils.js';
+
 
 const ROOMS_RATIO = 6;
 const GUESTS_RATIO = 10;
