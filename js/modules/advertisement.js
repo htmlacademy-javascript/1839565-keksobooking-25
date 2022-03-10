@@ -1,7 +1,7 @@
 import { getRandomArray, getRandomArrayElement, getFloatingPointNumber } from '../utils/utils.js';
 
 
-const ROOMS_RATIO = 6;
+const ROOMS_RATIO = 4;
 const GUESTS_RATIO = 10;
 const FRACTION_DIGIT = 5;
 const PRICE_RATIO = 10000;
@@ -41,6 +41,5 @@ export default class Advertisement {
       description:'Описание помещения',
       photos: getRandomArray(PHOTOS),
     };
-
   }
 }
