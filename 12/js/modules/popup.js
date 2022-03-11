@@ -7,20 +7,44 @@ const DICTIONARY_OF_TYPES = {
   palace: 'Дворец',
   hotel: 'Отель'
 };
-const POPUP_OFFER_AMOUNT = 2;
+const POPUP_OFFER_AMOUNT = 1;
 
 const map = document.querySelector('#map-canvas');
 const popupTemplate = document.querySelector('#card')
   .content.querySelector('.popup');
 
-function createOnArrayOfObject(count) {
+function createPopupOffersData(count) {
   return Array.from({length: count}, (_item, index) => new Advertisement(++index) );
 }
 
-const popupOffers = createOnArrayOfObject(POPUP_OFFER_AMOUNT);
+const popupOfferData = createPopupOffersData(POPUP_OFFER_AMOUNT);
 
-popupOffers.forEach(({author, offer}) => {
+const createFeatureList = (array, container) => {
+  container.innerHTML = '';
+  array.forEach((item) => {
+    const element = document.createElement('li');
+    element.classList.add('popup__feature');
+    element.classList.add(`popup__feature--${item}`);
+    container.append(element);
+  });
+};
 
+const createPhotoList = (photos, container) => {
+  container.innerHTML = '';
+  photos.forEach((photo) => {
+    const element = document.createElement('img');
+    element.classList.add('popup__photo');
+    element.width = '45';
+    element.height = '40';
+    element.alt = 'Фотография жилья';
+    element.src = photo;
+    container.append(element);
+  });
+};
+
+const createPopup = ([data]) => {
+  const avatar = data.author.avatar;
+  const offer = data.offer;
   const popupOffer = popupTemplate.cloneNode(true);
   const popupOfferAvatar = popupOffer.querySelector('.popup__avatar');
   const popupOfferTitle = popupOffer.querySelector('.popup__title');
@@ -30,11 +54,9 @@ popupOffers.forEach(({author, offer}) => {
   const popupOfferCapacity = popupOffer.querySelector('.popup__text--capacity');
   const popupOfferTime = popupOffer.querySelector('.popup__text--time');
   const popupOfferFeatureContainer = popupOffer.querySelector('.popup__features');
-  const popupOfferFeatureList = popupOfferFeatureContainer.querySelectorAll('.popup__feature');
   const popupOfferPhotosContainer = popupOffer.querySelector('.popup__photos');
-  const popupOfferPhotositem = popupOfferPhotosContainer.querySelector('.popup__photo');
 
-  popupOfferAvatar.src = author.avatar;
+  popupOfferAvatar.src = avatar;
   popupOfferPrice.textContent = offer.price;
   popupOfferType.textContent = DICTIONARY_OF_TYPES[`${offer.type}`];
   popupOfferCapacity.textContent = `${offer.rooms} комнаты для ${offer.guests} гостей`;
@@ -55,22 +77,11 @@ popupOffers.forEach(({author, offer}) => {
     popupOfferTime.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   }
 
-  popupOfferFeatureList.forEach((popupOfferFeatureListItem) => {
-    const isNecessary = offer.features.some(
-      (feature) => popupOfferFeatureListItem.classList.contains(`popup__feature--${feature}`),
-    );
+  createFeatureList(offer.features, popupOfferFeatureContainer);
+  createPhotoList(offer.photos, popupOfferPhotosContainer);
 
-    if (!isNecessary) {
-      popupOfferFeatureListItem.remove();
-    }
-  });
+  return popupOffer;
+};
 
-  popupOfferPhotosContainer.innerHTML = '';
-  offer.photos.forEach((photo) => {
-    const popupOfferPhoto = popupOfferPhotositem.cloneNode(true);
-    popupOfferPhoto.src = photo;
-    popupOfferPhotosContainer.append(popupOfferPhoto);
-  });
-
-  map.appendChild(popupOffer);
-});
+const popup = createPopup(popupOfferData);
+map.appendChild(popup);
