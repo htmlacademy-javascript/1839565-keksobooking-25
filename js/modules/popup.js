@@ -82,5 +82,6 @@ const createPopup = ([data]) => {
 
   return popupOffer;
 };
+
 const popup = createPopup(popupOfferData);
 map.appendChild(popup);
