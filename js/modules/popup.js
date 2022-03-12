@@ -53,6 +53,7 @@ const createPopup = ([data]) => {
   const popupOfferType = popupOffer.querySelector('.popup__type');
   const popupOfferCapacity = popupOffer.querySelector('.popup__text--capacity');
   const popupOfferTime = popupOffer.querySelector('.popup__text--time');
+  const popupOfferDescription = popupOffer.querySelector('.popup__description');
   const popupOfferFeatureContainer = popupOffer.querySelector('.popup__features');
   const popupOfferPhotosContainer = popupOffer.querySelector('.popup__photos');
 
@@ -65,6 +66,12 @@ const createPopup = ([data]) => {
     popupOfferTitle.textContent = offer.title;
   } else {
     popupOfferTitle.remove();
+  }
+
+  if (offer.description) {
+    popupOfferDescription.textContent = offer.description;
+  } else {
+    popupOfferDescription.remove();
   }
 
   if (offer.address) {
