@@ -9,7 +9,7 @@ const capacityOptions = {
   '2': ['для 2 гостей', 'для 1 гостя'],
   '3': ['для 3 гостей', 'для 2 гостей', 'для 1 гостя'],
   '100': ['не для гостей']
-}
+};
 const minPrice = {
   'bungalow': 0,
   'flat': 1000,
@@ -37,9 +37,8 @@ const getPriceErrorMessage = () => {
   const type = adForm.querySelector('#type');
   return `От ${minPrice[type.value]} до 100000`;
 };
-const getCapacityErrorMessage = () => {
-  return `${rooms.value} ${capacityOptions[rooms.value].join(' или ')}`
-};
+const getCapacityErrorMessage = () => `${rooms.value} ${capacityOptions[rooms.value].join(' или ')}`;
+
 
 function onTypeChange () {
   price.placeholder = minPrice[this.value];
