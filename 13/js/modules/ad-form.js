@@ -3,12 +3,13 @@ const price = adForm.querySelector('#price');
 const types = adForm.querySelectorAll('#type');
 const rooms = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
+const type = adForm.querySelector('#type');
 
 const capacityOptions = {
-  '1': ['для 1 гостя'],
-  '2': ['для 2 гостей', 'для 1 гостя'],
-  '3': ['для 3 гостей', 'для 2 гостей', 'для 1 гостя'],
-  '100': ['не для гостей']
+  1: ['для 1 гостя'],
+  2: ['для 2 гостей', 'для 1 гостя'],
+  3: ['для 3 гостей', 'для 2 гостей', 'для 1 гостя'],
+  100: ['не для гостей']
 };
 const minPrice = {
   'bungalow': 0,
@@ -28,15 +29,9 @@ const pristine = new Pristine(adForm, {
 });
 
 const validateTitle = (value) => value.length >= 30 && value.length <= 100;
-const validatePrice = (value) => {
-  const type = adForm.querySelector('#type');
-  return value <= 100000 && value >= minPrice[type.value];
-};
+const validatePrice = (value) => value <= 100000 && value >= minPrice[type.value];
 const validateCapacity = () => capacityOptions[rooms.value].includes(capacity.value);
-const getPriceErrorMessage = () => {
-  const type = adForm.querySelector('#type');
-  return `От ${minPrice[type.value]} до 100000`;
-};
+const getPriceErrorMessage = () => `От ${minPrice[type.value]} до 100000`;
 const getCapacityErrorMessage = () => `${rooms.value} ${capacityOptions[rooms.value].join(' или ')}`;
 
 
