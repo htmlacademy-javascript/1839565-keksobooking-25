@@ -4,6 +4,7 @@ const types = adForm.querySelectorAll('#type');
 const rooms = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const type = adForm.querySelector('#type');
+const titleError = 'минимум от 30 до 100 символов';
 
 const capacityOptions = {
   1: ['для 1 гостя'],
@@ -34,7 +35,6 @@ const validateCapacity = () => capacityOptions[rooms.value].includes(capacity.va
 const getPriceErrorMessage = () => `От ${minPrice[type.value]} до 100000`;
 const getCapacityErrorMessage = () => `${rooms.value} ${capacityOptions[rooms.value].join(' или ')}`;
 
-
 function onTypeChange () {
   price.placeholder = minPrice[this.value];
   pristine.validate(price);
@@ -45,7 +45,7 @@ types.forEach((item) => item.addEventListener('change', onTypeChange ));
 pristine.addValidator(
   adForm.querySelector('#title'),
   validateTitle,
-  'минимум от 30 до 100 символов'
+  titleError
 );
 
 pristine.addValidator(
