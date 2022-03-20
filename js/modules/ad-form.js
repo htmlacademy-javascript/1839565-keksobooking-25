@@ -12,11 +12,11 @@ const capacityOptions = {
   100: ['не для гостей']
 };
 const minPrice = {
-  'bungalow': 0,
-  'flat': 1000,
-  'hotel': 3000,
-  'house': 5000,
-  'palace': 10000
+  bungalow: 0,
+  flat: 1000,
+  hotel: 3000,
+  house: 5000,
+  palace: 10000
 };
 
 const pristine = new Pristine(adForm, {
