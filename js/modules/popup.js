@@ -28,7 +28,6 @@ const createFeatureList = (array, container) => {
     container.append(element);
   });
 };
-
 const createPhotoList = (photos, container) => {
   container.innerHTML = '';
   photos.forEach((photo) => {
