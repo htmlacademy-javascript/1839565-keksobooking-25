@@ -7,17 +7,13 @@ const DICTIONARY_OF_TYPES = {
   palace: 'Дворец',
   hotel: 'Отель'
 };
-const POPUP_OFFER_AMOUNT = 1;
 
-const map = document.querySelector('#map-canvas');
 const popupTemplate = document.querySelector('#card')
   .content.querySelector('.popup');
 
-function createPopupOffersData(count) {
+export function createPopupOffersData(count) {
   return Array.from({length: count}, (_item, index) => new Advertisement(++index) );
 }
-
-const popupOfferData = createPopupOffersData(POPUP_OFFER_AMOUNT);
 
 const createFeatureList = (array, container) => {
   container.innerHTML = '';
@@ -41,7 +37,7 @@ const createPhotoList = (photos, container) => {
   });
 };
 
-const createPopup = ([data]) => {
+export const createPopup = (data) => {
   const avatar = data.author.avatar;
   const offer = data.offer;
   const popupOffer = popupTemplate.cloneNode(true);
@@ -88,6 +84,3 @@ const createPopup = ([data]) => {
 
   return popupOffer;
 };
-
-const popup = createPopup(popupOfferData);
-map.appendChild(popup);
