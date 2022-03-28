@@ -19,7 +19,7 @@ noUiSlider.create(sliderElement, {
   connect: 'lower',
   format: {
     to: function (value) {
-      return parseFloat(value);
+      return parseFloat(value.toFixed(0));
     },
     from: function (value) {
       return parseFloat(value);
