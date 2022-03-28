@@ -4,6 +4,9 @@ const types = adForm.querySelectorAll('#type');
 const rooms = adForm.querySelector('#room_number');
 const capacity = adForm.querySelector('#capacity');
 const type = adForm.querySelector('#type');
+const sliderElement = document.querySelector('.ad-form__slider');
+const apartmentAddress = document.querySelector('#address');
+const mapFiltresForm = document.querySelector('.map__filters');
 const titleError = 'минимум от 30 до 100 символов';
 
 const capacityOptions = {
@@ -28,6 +31,20 @@ const pristine = new Pristine(adForm, {
   errorTextTag: 'span',
   errorTextClass: 'form__error'
 });
+
+export function setAdress (value) {
+  apartmentAddress.value = value;
+}
+export function disabledForm () {
+  adForm.classList.add('ad-form--disabled');
+  mapFiltresForm.classList.add('map__filters--disabled');
+}
+export function activateForm () {
+  apartmentAddress.setAttribute('readonly', 'readonly');
+  adForm.classList.remove('ad-form--disabled');
+  mapFiltresForm.classList.remove('map__filters--disabled');
+}
+
 
 const validateTitle = (value) => value.length >= 30 && value.length <= 100;
 const validatePrice = (value) => value <= 100000 && value >= minPrice[type.value];
@@ -67,4 +84,36 @@ pristine.addValidator(
 adForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   pristine.validate();
+});
+
+noUiSlider.create(sliderElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: 5000,
+  step: 1,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      return parseFloat(value.toFixed(0));
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
+});
+
+sliderElement.noUiSlider.on('update', () => {
+  price.value = sliderElement.noUiSlider.get();
+});
+
+type.addEventListener('change', (evt) => {
+  sliderElement.noUiSlider.updateOptions({
+    range: {
+      min: minPrice[evt.target.value],
+      max: 100000,
+    }
+  });
+  sliderElement.noUiSlider.set(minPrice[evt.target.value]);
 });

@@ -1,9 +1,7 @@
-import {activateForm} from './state-form.js';
-import {createPopupOffersData, createPopup} from './popup.js';
+import {createPopup, advertisementList} from './popup.js';
+import {setAdress, activateForm} from './ad-form.js';
 
-const apartmentAddress = document.querySelector('#address');
-const ADVERTISEMENS__AMOUNT = 10;
-const advertisementList = createPopupOffersData(ADVERTISEMENS__AMOUNT);
+
 const offerIcon = L.icon({
   iconUrl: './img/pin.svg',
   iconSize: [40, 40],
@@ -14,7 +12,7 @@ const mainPinIcon = L.icon({
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
-const marker  = L.marker(
+const mainMarker  = L.marker(
   {
     lat: 35.652832,
     lng: 139.839478,
@@ -27,6 +25,7 @@ const marker  = L.marker(
 const map = L.map('map-canvas')
   .on('load', () => {
     activateForm();
+    setAdress('35.652832, 139.839478');
   })
   .setView({
     lat: 35.652832,
@@ -40,28 +39,19 @@ L.tileLayer(
   },
 ).addTo(map);
 
-apartmentAddress.setAttribute('readonly', 'readonly');
-marker.addTo(map);
+mainMarker.addTo(map);
 
-marker.on('moveend', (evt) => {
+mainMarker.on('moveend', (evt) => {
   const {lat, lng} = evt.target.getLatLng();
-  apartmentAddress.value = `${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+  setAdress(`${lat.toFixed(5)}, ${lng.toFixed(5)}`);
 });
 
-advertisementList.forEach((advertisement) => {
-  const {lat, lng} = advertisement.location;
-  const popup = createPopup(advertisement);
-  const offerMarker = L.marker(
-    {
-      lat,
-      lng
-    },
-    {
-      icon: offerIcon
-    }
-  );
+const createMarker = ({lat, lng}, icon) =>  L.marker({lat, lng}, {icon});
+const drawMarker = (marker, popup) => marker.addTo(map).bindPopup(popup);
 
-  offerMarker
-    .addTo(map)
-    .bindPopup(popup);
+advertisementList.forEach((advertisement) => {
+  const popup = createPopup(advertisement);
+  const offerMarker = createMarker(advertisement.location, offerIcon);
+
+  drawMarker(offerMarker, popup);
 });

@@ -7,14 +7,15 @@ const DICTIONARY_OF_TYPES = {
   palace: 'Дворец',
   hotel: 'Отель'
 };
-
+const ADVERTISEMENS__AMOUNT = 10;
 const popupTemplate = document.querySelector('#card')
   .content.querySelector('.popup');
 
-export function createPopupOffersData(count) {
+function createPopupOffersData(count) {
   return Array.from({length: count}, (_item, index) => new Advertisement(++index) );
 }
 
+export const advertisementList = createPopupOffersData(ADVERTISEMENS__AMOUNT);
 const createFeatureList = (array, container) => {
   container.innerHTML = '';
   array.forEach((item) => {
