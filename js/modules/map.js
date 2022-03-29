@@ -1,7 +1,10 @@
 import {createPopup, advertisementList} from './popup.js';
 import {setAdress, activateForm} from './ad-form.js';
 
-
+const TOKYO__CENTER = {
+  lat: '35.652832',
+  lng: '139.839478'
+};
 const offerIcon = L.icon({
   iconUrl: './img/pin.svg',
   iconSize: [40, 40],
@@ -25,7 +28,7 @@ const mainMarker  = L.marker(
 const map = L.map('map-canvas')
   .on('load', () => {
     activateForm();
-    setAdress('35.652832, 139.839478');
+    setAdress(`${TOKYO__CENTER.lat}, ${TOKYO__CENTER.lng}`);
   })
   .setView({
     lat: 35.652832,
@@ -47,11 +50,15 @@ mainMarker.on('moveend', (evt) => {
 });
 
 const createMarker = ({lat, lng}, icon) =>  L.marker({lat, lng}, {icon});
-const drawMarker = (marker, popup) => marker.addTo(map).bindPopup(popup);
+const addMarkersToMap  = (advertisements) => {
+  advertisements.forEach((item) => {
+    const popup = createPopup(item);
+    const offerMarker = createMarker(item.location, offerIcon);
 
-advertisementList.forEach((advertisement) => {
-  const popup = createPopup(advertisement);
-  const offerMarker = createMarker(advertisement.location, offerIcon);
+    offerMarker
+      .addTo(map)
+      .bindPopup(popup);
+  });
+};
 
-  drawMarker(offerMarker, popup);
-});
+addMarkersToMap(advertisementList);

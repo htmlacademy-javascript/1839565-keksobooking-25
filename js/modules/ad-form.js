@@ -7,7 +7,7 @@ const type = adForm.querySelector('#type');
 const sliderElement = document.querySelector('.ad-form__slider');
 const apartmentAddress = document.querySelector('#address');
 const mapFiltresForm = document.querySelector('.map__filters');
-const titleError = 'минимум от 30 до 100 символов';
+const TITLE_ERROR = 'минимум от 30 до 100 символов';
 
 const capacityOptions = {
   1: ['для 1 гостя'],
@@ -32,18 +32,18 @@ const pristine = new Pristine(adForm, {
   errorTextClass: 'form__error'
 });
 
-export function setAdress (value) {
+export const setAdress = (value) => {
   apartmentAddress.value = value;
-}
-export function disabledForm () {
+};
+export const disabledForm = () => {
   adForm.classList.add('ad-form--disabled');
   mapFiltresForm.classList.add('map__filters--disabled');
-}
-export function activateForm () {
+};
+export const activateForm = () => {
   apartmentAddress.setAttribute('readonly', 'readonly');
   adForm.classList.remove('ad-form--disabled');
   mapFiltresForm.classList.remove('map__filters--disabled');
-}
+};
 
 
 const validateTitle = (value) => value.length >= 30 && value.length <= 100;
@@ -62,7 +62,7 @@ types.forEach((item) => item.addEventListener('change', onTypeChange ));
 pristine.addValidator(
   adForm.querySelector('#title'),
   validateTitle,
-  titleError
+  TITLE_ERROR
 );
 
 pristine.addValidator(
@@ -95,10 +95,10 @@ noUiSlider.create(sliderElement, {
   step: 1,
   connect: 'lower',
   format: {
-    to: function (value) {
+    to (value) {
       return parseFloat(value.toFixed(0));
     },
-    from: function (value) {
+    from (value) {
       return parseFloat(value);
     },
   },
