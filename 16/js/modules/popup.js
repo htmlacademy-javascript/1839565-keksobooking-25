@@ -7,34 +7,47 @@ const DICTIONARY_OF_TYPES = {
   palace: 'Дворец',
   hotel: 'Отель'
 };
-
+const ADVERTISEMENS__AMOUNT = 10;
 const popupTemplate = document.querySelector('#card')
   .content.querySelector('.popup');
 
-export function createPopupOffersData(count) {
+function createPopupOffersData(count) {
   return Array.from({length: count}, (_item, index) => new Advertisement(++index) );
 }
 
-const createFeatureList = (array, container) => {
-  container.innerHTML = '';
-  array.forEach((item) => {
-    const element = document.createElement('li');
-    element.classList.add('popup__feature');
-    element.classList.add(`popup__feature--${item}`);
-    container.append(element);
-  });
+export const advertisementList = createPopupOffersData(ADVERTISEMENS__AMOUNT);
+
+const createFeatureElement = (feature) => {
+  const element = document.createElement('li');
+  element.classList.add('popup__feature');
+  element.classList.add(`popup__feature--${feature}`);
+  return element;
 };
-const createPhotoList = (photos, container) => {
-  container.innerHTML = '';
-  photos.forEach((photo) => {
-    const element = document.createElement('img');
-    element.classList.add('popup__photo');
-    element.width = '45';
-    element.height = '40';
-    element.alt = 'Фотография жилья';
-    element.src = photo;
-    container.append(element);
+const createFeatureList = (array) => {
+  const featuresFragment = document.createDocumentFragment();
+  array.forEach((item) => {
+    const element = createFeatureElement(item);
+    featuresFragment.append(element);
   });
+  return featuresFragment;
+};
+
+const createPhotoElement = (photo) => {
+  const element = document.createElement('img');
+  element.classList.add('popup__photo');
+  element.width = '45';
+  element.height = '40';
+  element.alt = 'Фотография жилья';
+  element.src = photo;
+  return element;
+};
+const createPhotoList = (photos) => {
+  const photosFragment = document.createDocumentFragment();
+  photos.forEach((photo) => {
+    const element = createPhotoElement(photo);
+    photosFragment.append(element);
+  });
+  return photosFragment;
 };
 
 export const createPopup = (data) => {
@@ -79,8 +92,8 @@ export const createPopup = (data) => {
     popupOfferTime.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   }
 
-  createFeatureList(offer.features, popupOfferFeatureContainer);
-  createPhotoList(offer.photos, popupOfferPhotosContainer);
+  popupOfferFeatureContainer.append(createFeatureList(offer.features));
+  popupOfferPhotosContainer.append(createPhotoList(offer.photos));
 
   return popupOffer;
 };
