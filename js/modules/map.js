@@ -1,5 +1,6 @@
-import {createPopup, advertisementList} from './popup.js';
+import {createPopup} from './popup.js';
 import {setAdress, activateForm} from './ad-form.js';
+
 
 const TOKYO__CENTER = {
   lat: '35.652832',
@@ -17,8 +18,8 @@ const mainPinIcon = L.icon({
 });
 const mainMarker  = L.marker(
   {
-    lat: 35.652832,
-    lng: 139.839478,
+    lat: TOKYO__CENTER.lat,
+    lng: TOKYO__CENTER.lng,
   },
   {
     draggable: true,
@@ -33,7 +34,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: 35.652832,
     lng: 139.839478
-  }, 10);
+  }, 13);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -50,7 +51,7 @@ mainMarker.on('moveend', (evt) => {
 });
 
 const createMarker = ({lat, lng}, icon) =>  L.marker({lat, lng}, {icon});
-const addMarkersToMap  = (advertisements) => {
+export const addMarkersToMap  = (advertisements) => {
   advertisements.forEach((item) => {
     const popup = createPopup(item);
     const offerMarker = createMarker(item.location, offerIcon);
@@ -61,4 +62,13 @@ const addMarkersToMap  = (advertisements) => {
   });
 };
 
-addMarkersToMap(advertisementList);
+export const resetMainMarker = () =>  {
+  mainMarker.setLatLng(
+    {
+      lat: TOKYO__CENTER.lat,
+      lng: TOKYO__CENTER.lng,
+    }
+  );
+  setAdress(`${TOKYO__CENTER.lat}, ${TOKYO__CENTER.lng}`);
+  map.closePopup();
+};

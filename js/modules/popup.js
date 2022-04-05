@@ -92,8 +92,8 @@ export const createPopup = (data) => {
     popupOfferTime.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   }
 
-  popupOfferFeatureContainer.append(createFeatureList(offer.features));
-  popupOfferPhotosContainer.append(createPhotoList(offer.photos));
+  if (offer.feature) {popupOfferFeatureContainer.append(createFeatureList(offer.features));}
+  if (offer.photos) {popupOfferPhotosContainer.append(createPhotoList(offer.photos));}
 
   return popupOffer;
 };
