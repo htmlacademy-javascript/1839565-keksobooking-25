@@ -1,5 +1,5 @@
-import { showErrorMessage } from '../utils/utils.js';
-import { resetMainMarker } from './map.js';
+import { sendData } from './api.js';
+import { resetMap } from './map.js';
 
 const adForm = document.querySelector('.ad-form');
 const price = adForm.querySelector('#price');
@@ -36,14 +36,14 @@ const pristine = new Pristine(adForm, {
   errorTextClass: 'form__error'
 });
 
-export const setAdress = (value) => {
+const setAdress = (value) => {
   apartmentAddress.value = value;
 };
-export const disabledForm = () => {
+const disabledForm = () => {
   adForm.classList.add('ad-form--disabled');
   mapFiltresForm.classList.add('map__filters--disabled');
 };
-export const activateForm = () => {
+const activateForm = () => {
   apartmentAddress.setAttribute('readonly', 'readonly');
   adForm.classList.remove('ad-form--disabled');
   mapFiltresForm.classList.remove('map__filters--disabled');
@@ -53,9 +53,10 @@ resetFormBtn.addEventListener('click', (evt) => {
   evt.preventDefault();
   sliderElement.noUiSlider.set(5000);
   adForm.reset();
-  resetMainMarker();
+  resetMap();
 });
 
+const clickResetFormBtn = () => resetFormBtn.click();
 const validateTitle = (value) => value.length >= 30 && value.length <= 100;
 const validatePrice = (value) => value <= 100000 && value >= minPrice[type.value];
 const validateCapacity = () => capacityOptions[rooms.value].includes(capacity.value);
@@ -90,31 +91,14 @@ pristine.addValidator(
   getCapacityErrorMessage
 );
 
-export const setAdFormSubmit = (onSuccess) => {
+const setAdFormSubmit = () => {
   adForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
 
     const isValid = pristine.validate();
     const formDate = new FormData(evt.target);
     if (isValid) {
-      fetch(
-        'https://25.javascript.pages.academy/keksobooking',
-        {
-          method: 'POST',
-          body: formDate,
-        }
-      )
-        .then((response) => {
-          if (response.ok) {
-            onSuccess();
-            resetFormBtn.click();
-          } else {
-            showErrorMessage();
-          }
-        })
-        .catch(() => {
-          showErrorMessage();
-        });
+      sendData(formDate);
     }
   });
 };
@@ -151,3 +135,4 @@ type.addEventListener('change', (evt) => {
   sliderElement.noUiSlider.set(minPrice[evt.target.value]);
 });
 
+export {setAdress, disabledForm, activateForm, clickResetFormBtn, setAdFormSubmit};

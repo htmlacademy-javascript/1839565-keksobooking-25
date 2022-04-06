@@ -6,6 +6,7 @@ const TOKYO__CENTER = {
   lat: '35.652832',
   lng: '139.839478'
 };
+const MAP_ZOOM = 13;
 const offerIcon = L.icon({
   iconUrl: './img/pin.svg',
   iconSize: [40, 40],
@@ -32,9 +33,9 @@ const map = L.map('map-canvas')
     setAdress(`${TOKYO__CENTER.lat}, ${TOKYO__CENTER.lng}`);
   })
   .setView({
-    lat: 35.652832,
-    lng: 139.839478
-  }, 13);
+    lat: TOKYO__CENTER.lat,
+    lng: TOKYO__CENTER.lng
+  }, MAP_ZOOM);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -51,7 +52,7 @@ mainMarker.on('moveend', (evt) => {
 });
 
 const createMarker = ({lat, lng}, icon) =>  L.marker({lat, lng}, {icon});
-export const addMarkersToMap  = (advertisements) => {
+const addMarkersToMap  = (advertisements) => {
   advertisements.forEach((item) => {
     const popup = createPopup(item);
     const offerMarker = createMarker(item.location, offerIcon);
@@ -62,7 +63,7 @@ export const addMarkersToMap  = (advertisements) => {
   });
 };
 
-export const resetMainMarker = () =>  {
+const resetMap = () =>  {
   mainMarker.setLatLng(
     {
       lat: TOKYO__CENTER.lat,
@@ -72,3 +73,5 @@ export const resetMainMarker = () =>  {
   setAdress(`${TOKYO__CENTER.lat}, ${TOKYO__CENTER.lng}`);
   map.closePopup();
 };
+
+export {addMarkersToMap, resetMap};
