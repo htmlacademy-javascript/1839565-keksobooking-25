@@ -1,5 +1,6 @@
 import { sendData } from './api.js';
 import { resetMap } from './map.js';
+import { showSuccessMesage, showErrorMesage } from './dialogs.js';
 
 const adForm = document.querySelector('.ad-form');
 const price = adForm.querySelector('#price');
@@ -12,6 +13,7 @@ const apartmentAddress = document.querySelector('#address');
 const mapFiltresForm = document.querySelector('.map__filters');
 const TITLE_ERROR = 'минимум от 30 до 100 символов';
 const resetFormBtn = document.querySelector('.ad-form__reset');
+const submitButton = document.querySelector('.ad-form__submit');
 
 const capacityOptions = {
   1: ['1'],
@@ -56,6 +58,16 @@ resetFormBtn.addEventListener('click', (evt) => {
   resetMap();
 });
 
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Сохраняю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Сохранить';
+};
+
 const clickResetFormBtn = () => resetFormBtn.click();
 const validateTitle = (value) => value.length >= 30 && value.length <= 100;
 const validatePrice = (value) => value <= 100000 && value >= minPrice[type.value];
@@ -91,17 +103,31 @@ pristine.addValidator(
   getCapacityErrorMessage
 );
 
-const setAdFormSubmit = () => {
-  adForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    const isValid = pristine.validate();
-    const formDate = new FormData(evt.target);
-    if (isValid) {
-      sendData(formDate);
-    }
-  });
+const onSuccess = () => {
+  showSuccessMesage();
+  clickResetFormBtn();
+  unblockSubmitButton();
 };
+const onError = () => {
+  showErrorMesage();
+  unblockSubmitButton();
+};
+
+adForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  const isValid = pristine.validate();
+  const formDate = new FormData(evt.target);
+  if (isValid) {
+    blockSubmitButton();
+    sendData(
+      onSuccess,
+      onError,
+      formDate
+    );
+  }
+});
+
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -135,4 +161,4 @@ type.addEventListener('change', (evt) => {
   sliderElement.noUiSlider.set(minPrice[evt.target.value]);
 });
 
-export {setAdress, disabledForm, activateForm, clickResetFormBtn, setAdFormSubmit};
+export {setAdress, disabledForm, activateForm, clickResetFormBtn};
