@@ -50,7 +50,7 @@ const createPhotoList = (photos) => {
   return photosFragment;
 };
 
-export const createPopup = (data) => {
+const createPopup = (data) => {
   const avatar = data.author.avatar;
   const offer = data.offer;
   const popupOffer = popupTemplate.cloneNode(true);
@@ -92,8 +92,15 @@ export const createPopup = (data) => {
     popupOfferTime.textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}`;
   }
 
-  popupOfferFeatureContainer.append(createFeatureList(offer.features));
-  popupOfferPhotosContainer.append(createPhotoList(offer.photos));
+  if (offer.feature) {
+    popupOfferFeatureContainer.append(createFeatureList(offer.features));
+  }
+
+  if (offer.photos) {
+    popupOfferPhotosContainer.append(createPhotoList(offer.photos));
+  }
 
   return popupOffer;
 };
+
+export {createPopup};

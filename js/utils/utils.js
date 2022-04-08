@@ -1,11 +1,11 @@
-export const getRandomNumber = (from, to) => {
+const getRandomNumber = (from, to) => {
   if (0 <= from && from < to) {
     return Math.floor(Math.random() * (to - from + 1) + from);
   }
   throw new Error('Неверное значение');
 };
 
-export const getFloatingPointNumber = (from, to, fractionDigit) => {
+const getFloatingPointNumber = (from, to, fractionDigit) => {
   if (0 <= from && from < to && 0 <= fractionDigit) {
     const result = Math.random() * (to - from + 1) + from;
     return +result.toFixed(fractionDigit);
@@ -13,6 +13,11 @@ export const getFloatingPointNumber = (from, to, fractionDigit) => {
   throw new Error('Неверное значение');
 };
 
-export const getRandomArray = (array) => array.slice(0, getRandomNumber(1, array.length) );
+const getRandomArray = (array) => array.slice(0, getRandomNumber(1, array.length) );
 
-export const getRandomArrayElement = (array) => array[ getRandomNumber(0, array.length - 1) ];
+const getRandomArrayElement = (array) => array[ getRandomNumber(0, array.length - 1) ];
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+
+export {getRandomNumber, getFloatingPointNumber, getRandomArray, getRandomArrayElement, isEscapeKey};

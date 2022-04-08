@@ -1,10 +1,12 @@
-import {createPopup, advertisementList} from './popup.js';
+import {createPopup} from './popup.js';
 import {setAdress, activateForm} from './ad-form.js';
+
 
 const TOKYO__CENTER = {
   lat: '35.652832',
   lng: '139.839478'
 };
+const MAP_ZOOM = 13;
 const offerIcon = L.icon({
   iconUrl: './img/pin.svg',
   iconSize: [40, 40],
@@ -17,8 +19,8 @@ const mainPinIcon = L.icon({
 });
 const mainMarker  = L.marker(
   {
-    lat: 35.652832,
-    lng: 139.839478,
+    lat: TOKYO__CENTER.lat,
+    lng: TOKYO__CENTER.lng,
   },
   {
     draggable: true,
@@ -31,9 +33,9 @@ const map = L.map('map-canvas')
     setAdress(`${TOKYO__CENTER.lat}, ${TOKYO__CENTER.lng}`);
   })
   .setView({
-    lat: 35.652832,
-    lng: 139.839478
-  }, 10);
+    lat: TOKYO__CENTER.lat,
+    lng: TOKYO__CENTER.lng
+  }, MAP_ZOOM);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -61,4 +63,15 @@ const addMarkersToMap  = (advertisements) => {
   });
 };
 
-addMarkersToMap(advertisementList);
+const resetMap = () =>  {
+  mainMarker.setLatLng(
+    {
+      lat: TOKYO__CENTER.lat,
+      lng: TOKYO__CENTER.lng,
+    }
+  );
+  setAdress(`${TOKYO__CENTER.lat}, ${TOKYO__CENTER.lng}`);
+  map.closePopup();
+};
+
+export {addMarkersToMap, resetMap};
